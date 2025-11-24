@@ -1,0 +1,188 @@
+openapi: 3.0.3
+info:
+  title: FTTH-NETMAP API
+  version: 0.1.0
+servers:
+  - url: http://localhost:3333
+paths:
+  /auth/login:
+    post:
+      summary: Autenticación básica con JWT
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+              required: [username]
+      responses:
+        '200':
+          description: Token generado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+  /cables:
+    get:
+      summary: Listar cables
+      responses:
+        '200':
+          description: Colección de cables
+    post:
+      summary: Crear cable
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cable'
+      responses:
+        '201':
+          description: Cable creado
+  /splices:
+    get:
+      summary: Listar empalmes
+      responses:
+        '200':
+          description: Colección de planes de empalme
+    post:
+      summary: Crear plan de empalme
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SplicePlan'
+      responses:
+        '201':
+          description: Empalme creado
+  /splices/{id}/connect:
+    post:
+      summary: Conectar fibra a splitter
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                fiberId:
+                  type: string
+                splitterId:
+                  type: string
+      responses:
+        '200':
+          description: Empalme actualizado
+  /map/nodes:
+    get:
+      summary: Listar nodos GIS
+      responses:
+        '200':
+          description: Nodos
+    post:
+      summary: Crear nodo GIS
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                lat:
+                  type: number
+                lng:
+                  type: number
+      responses:
+        '201':
+          description: Nodo creado
+components:
+  schemas:
+    Cable:
+      type: object
+      properties:
+        code:
+          type: string
+        length:
+          type: number
+        type:
+          type: string
+        capacity:
+          type: object
+          properties:
+            buffers:
+              type: integer
+            fibers:
+              type: integer
+        colorPattern:
+          type: array
+          items:
+            type: object
+            properties:
+              buffer:
+                type: string
+              fiber:
+                type: string
+              position:
+                type: integer
+    SplicePlan:
+      type: object
+      properties:
+        name:
+          type: string
+        cableId:
+          type: string
+        splitterLevels:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              code:
+                type: string
+              level:
+                type: integer
+              ratio:
+                type: string
+              outputs:
+                type: integer
+              connections:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    output:
+                      type: integer
+                    fiberId:
+                      type: string
+        fibers:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              code:
+                type: string
+              buffer:
+                type: string
+              color:
+                type: string
+              status:
+                type: string
+              connectedTo:
+                type: string

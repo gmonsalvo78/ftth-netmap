@@ -1,0 +1,36 @@
+{
+  "name": "ftth-netmap",
+  "version": "0.1.0",
+  "private": true,
+  "description": "FTTH-NETMAP API-first GIS and splice management suite",
+  "scripts": {
+    "dev:api": "ts-node api/server.ts",
+    "dev:web": "vite --config web/vite.config.ts",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "build:web": "vite build --config web/vite.config.ts",
+    "build:api": "ts-node api/server.ts",
+    "openapi": "node ./docs/generate-openapi.js"
+  },
+  "dependencies": {
+    "@fastify/cors": "^9.0.0",
+    "@fastify/swagger": "^8.12.0",
+    "@fastify/swagger-ui": "^2.0.0",
+    "fastify": "^4.26.2",
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.11.3",
+    "reflect-metadata": "^0.1.13",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.2",
+    "@types/node": "^20.11.21",
+    "@typescript-eslint/eslint-plugin": "^7.1.0",
+    "@typescript-eslint/parser": "^7.1.0",
+    "eslint": "^8.57.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3",
+    "vite": "^5.1.0",
+    "vue": "^3.4.15"
+  }
+}
